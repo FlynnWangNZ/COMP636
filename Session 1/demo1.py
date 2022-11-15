@@ -12,5 +12,7 @@ print("Finally we get the result of " + str(result))
 
 if result == 18:
     print("they are perfect combinations")
+elif result == 20:
+    print("I happen to be happy this morning.")
 else:
     print("I have got better combinations")

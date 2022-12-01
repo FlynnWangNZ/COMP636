@@ -91,28 +91,32 @@ def getNewValue(dbCur):
     for index in range(1, len(columnNames)):
         displayText += f"{index} - {columnNames[index]}\n"
     displayText += "0 <-Back\nPlease select the column INDEX to be updated: "
+    # print the existed value to select from.
     columnIndex = input(displayText)
     try:
         columnIndex = int(columnIndex)
     except Exception as e:
         print("You are supposed to enter an integer.")
+        return
     
+    # Go back to the main menu
     if columnIndex == 0:
         return
 
+    # Valid index
     if 0 < columnIndex < len(columnNames):
         columnName = columnNames[columnIndex]
         columnType = FieldType.get_info(dbCur.description[columnIndex][1])
         newValue = input("Please enter the value: ")
         if columnType == 'DATE':
-            # A simplified expression to check date format
+            # A simplified expression to check date format. There should be a more exact pattern. 
             if re.search('^[0-9]{4}-[0-9]{2}-[0-9]{2}$', newValue):
                 newValue = f"str_to_date('{newValue}', '%Y-%m-%d')"
             else:
                 raise ValueError("Date value should be in format of 'yyyy-mm-dd'")
         else:
             newValue = f"'{newValue}'"
-
+        # return a value that can be used in SQL statement immediately(with quotes).
         return columnName, newValue
     else:
         raise ValueError("The index you entered is not valid.")
@@ -141,13 +145,13 @@ def updateBorrower():
             print(e)
     else:  # borrower id does not exist
         print("There is no such borrower.")
-    
-    
+
+
 def addLoan():
-    # input borrower id and check if it is valid
+    # enter borrower id and check if it is valid
     listBorrowers()
     cur = getCursor()
-    borrowerid = input("Please input the borrower id: ")
+    borrowerid = input("Please enter the borrower id: ")
     try:
         borrowerid = int(borrowerid)
     except Exception as e:
@@ -159,10 +163,10 @@ def addLoan():
         print(f"The borrower id {borrowerid} does not exist.")
         return
     
-    # input book copy id and check if it is valid
+    # enter book copy id and check if it is valid
     listBookcopies()
     cur = getCursor()
-    bookcopyid = input("Please input the book copy id: ")
+    bookcopyid = input("Please enter the book copy id: ")
     try:
         bookcopyid = int(bookcopyid)
     except Exception as e:
@@ -215,7 +219,7 @@ def dispMenu():
     print("6 - Loan Book")
     print("Q - Quit")
     response = input("Please select menu choice: ")
-    return response.upper()  # Convert all input content into UPPER case
+    return response.upper()  # Convert all entered content into UPPER case
 
 # ******** MAIN PROGRAM *********
 
@@ -236,7 +240,7 @@ while response != "Q":
         reportMostLoanedBooks()
     elif response == "6":
         addLoan()
-    elif response == "R":  # Continue the loop
+    elif response == "R":  # Option to continue the loop
         continue
     else:
         print("Invalid response, please re-enter.")
@@ -246,5 +250,3 @@ while response != "Q":
     response = dispMenu()
 
 print("=== Thank you for using WAIKIRIKIRI LIBRARY MANAGEMENT SYSTEM ===")
-
-

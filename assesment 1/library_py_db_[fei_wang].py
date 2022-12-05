@@ -74,10 +74,11 @@ def listBookcopies(bookid=None):
     cur = getCursor()
     # show all book copies of specific bookid
     if bookid:
-        querySql = f"select * from bookcopies where bookid = {bookid}"
+        querySql = "select * from bookcopies where bookid = %s"
+        cur.execute(querySql, (bookid, ))
     else:
         querySql = "select * from bookcopies order by bookid, bookcopyid"
-    cur.execute(querySql)
+        cur.execute(querySql)
     dbOutput = cur.fetchall()
     colOutputDict = {desc[0]:FieldType.get_info(desc[1]) for desc in cur.description}
     print("\nBORROWERS\n")
@@ -133,7 +134,7 @@ def updateBorrower():
         print("\n Error. You should enter a number rather than anything else.")
     # fetch data from db of the specific borrower id
     cur = getCursor()
-    cur.execute(f"select * from borrowers where borrowerid = {borrower_id}")
+    cur.execute("select * from borrowers where borrowerid = %s", (borrower_id, ))
     dbOutPut = cur.fetchall()
     if dbOutPut:  # borrower id is valid
         try:
@@ -157,7 +158,7 @@ def addLoan():
     except Exception as e:
         print("Borrower id should be a number.")
         return
-    cur.execute(f"select * from borrowers where borrowerid = {borrowerid}")
+    cur.execute("select * from borrowers where borrowerid = %s", (borrowerid, ))
     dbOutput = cur.fetchall()
     if not dbOutput:
         print(f"The borrower id {borrowerid} does not exist.")
@@ -172,7 +173,7 @@ def addLoan():
     except Exception as e:
         print("Book copy id should be a number.")
         return
-    cur.execute(f"select * from bookcopies where bookcopyid = {bookcopyid}")
+    cur.execute("select * from bookcopies where bookcopyid = %s", (bookcopyid, ))
     dbOutput = cur.fetchall()
     if not dbOutput:
         print(f"The book copy id {bookcopyid} does not exist.")
@@ -180,7 +181,7 @@ def addLoan():
 
     # insert a record of book loan
     cur = getCursor()
-    cur.execute(f"insert into loans values(null, {bookcopyid}, {borrowerid}, curdate(), 0)")
+    cur.execute("insert into loans values(null, %s, %s, curdate(), 0)", (bookcopyid, borrowerid))
     print("Add loan finished.")
 
 

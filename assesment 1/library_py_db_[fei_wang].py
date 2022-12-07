@@ -47,6 +47,16 @@ def columnOutput(dbData,cols,formatStr):
         print(formatStr.format(*rowList))   
 
 
+def get_valid_value(input_value, expected_type):
+    try:
+        input_value = expected_type(input_value)
+    except Exception as e:
+        print(f"The value {input_value} if not a valid type of {expected_type}")
+        input_value = None
+    finally:
+        return input_value
+
+
 def listBooks():
     cur = getCursor()
     # book list with number of copy orderd by year of publication desc and then category asc and then title asc
@@ -93,15 +103,10 @@ def getNewValue(dbCur):
         displayText += f"{index} - {columnNames[index]}\n"
     displayText += "0 <-Back\nPlease select the column INDEX to be updated: "
     # print the existed value to select from.
-    columnIndex = input(displayText)
-    try:
-        columnIndex = int(columnIndex)
-    except Exception as e:
-        print("You are supposed to enter an integer.")
-        return
+    columnIndex = get_valid_value(input(displayText), int)
     
-    # Go back to the main menu
-    if columnIndex == 0:
+    # columnIndex is not a valid value, or 0 for go back
+    if not columnIndex or columnIndex == 0:
         return
 
     # Valid index
@@ -127,11 +132,9 @@ def updateBorrower():
     # list all borrowers
     listBorrowers()
     # get user intpu borrower id
-    borrower_id = input("Please enter the borrower id you want update: ")
-    try:  # borrower id should be a number
-        borrower_id = int(borrower_id)
-    except Exception as e:
-        print("\n Error. You should enter a number rather than anything else.")
+    borrower_id = get_valid_value(input("Please enter the borrower id you want update: "), int)
+    if not borrower_id:  # borrower id is not a valid value
+        return
     # fetch data from db of the specific borrower id
     cur = getCursor()
     cur.execute("select * from borrowers where borrowerid = %s", (borrower_id, ))
@@ -144,6 +147,8 @@ def updateBorrower():
             print("Value has been updated.")  # print result to user
         except ValueError as e:
             print(e)
+        except Exception:
+            return
     else:  # borrower id does not exist
         print("There is no such borrower.")
 
@@ -152,11 +157,8 @@ def addLoan():
     # enter borrower id and check if it is valid
     listBorrowers()
     cur = getCursor()
-    borrowerid = input("Please enter the borrower id: ")
-    try:
-        borrowerid = int(borrowerid)
-    except Exception as e:
-        print("Borrower id should be a number.")
+    borrowerid = get_valid_value(input("Please enter the borrower id: "), int)
+    if not borrowerid:
         return
     cur.execute("select * from borrowers where borrowerid = %s", (borrowerid, ))
     dbOutput = cur.fetchall()
@@ -167,11 +169,8 @@ def addLoan():
     # enter book copy id and check if it is valid
     listBookcopies()
     cur = getCursor()
-    bookcopyid = input("Please enter the book copy id: ")
-    try:
-        bookcopyid = int(bookcopyid)
-    except Exception as e:
-        print("Book copy id should be a number.")
+    bookcopyid = get_valid_value(input("Please enter the book copy id: "), int)
+    if not bookcopyid:
         return
     cur.execute("select * from bookcopies where bookcopyid = %s", (bookcopyid, ))
     dbOutput = cur.fetchall()

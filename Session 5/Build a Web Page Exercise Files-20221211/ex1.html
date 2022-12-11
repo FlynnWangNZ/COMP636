@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	</head>
+
+	<body style="background-image: url('image.png')">
+		<p style="text-align:center">
+			<img src="robot.jpg"/>
+		</p>
+		<div style="text-align: center; color: white">
+			<p>Hi, I am MAC Robot. What is your name?</p>
+			<input id="user_name" type="text" placeholder="Your name"/>
+			<button style="background-color:red; color:white" onclick="hello()">Submit</button>
+			<p id="output"></p>
+		</div>
+		<script>
+			function hello(){
+				const name = document.getElementById("user_name").value;
+				console.log(name);
+				document.getElementById("output").innerHTML = "Hello " + name;
+			}
+		</script>
+    </body>
+</html>
+

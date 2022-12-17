@@ -5,7 +5,8 @@
 <h3>A list of all books in our collection</h3>
 
 <table class="table table-striped table-hover">
-    <tr><th>Book ID</th><th>Title</th><th>Author</th><th>Type</th><th>Year of Publication</th><th>Description</th></tr>
+    <thead><th>Book ID</th><th>Title</th><th>Author</th><th>Type</th><th>Year of Publication</th><th>Description</th></thead>
+    <tbody>
     {% for book in booklist %}
         <tr>
             {% for entry in book %}
@@ -13,6 +14,7 @@
             {% endfor %}
         </tr>
     {% endfor %}
+</tbody>
 </table>
 
 {% endblock %}

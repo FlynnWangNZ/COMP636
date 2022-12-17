@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<!-- code in here to display a list of borrowers -->
+<!-- borrowerlist is the variable passed in containing list of loans -->
+<table class="table table-striped table-hover">
+    <tr>
+        <th>BorrowerID</th>
+        <th>FirstName</th>
+        <th>FamilyName</th>
+        <th>DateOfBirth</th>
+        <th>HouseNumberName</th>
+        <th>Street</th>
+        <th>Town</th>
+        <th>City</th>
+        <th>Postcode</th>
+    </tr>
+    {% for borrower in borrowerlist %}
+    <tr>
+        {% for column in borrower %}
+            <td>{{column}}</td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

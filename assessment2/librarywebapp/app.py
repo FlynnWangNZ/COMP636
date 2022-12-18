@@ -43,7 +43,7 @@ def loanbook():
     borrowerList = connection.fetchall()
     sql = """SELECT * FROM bookcopies
 inner join books on books.bookid = bookcopies.bookid
- WHERE bookcopyid not in (SELECT bookcopyid from loans where returned <> 1);"""
+ WHERE bookcopyid not in (SELECT bookcopyid from loans where returned <> 1 or returned is NULL);"""
     connection.execute(sql)
     bookList = connection.fetchall()
     return render_template("addloan.html", loandate = todaydate,borrowers = borrowerList, books= bookList)
@@ -54,7 +54,7 @@ def addloan():
     bookid = request.form.get('book')
     loandate = request.form.get('loandate')
     cur = getCursor()
-    cur.execute("INSERT INTO loans (borrowerid, bookcopyid, loandate) VALUES(%s,%s,%s);",(borrowerid, bookid, str(loandate),))
+    cur.execute("INSERT INTO loans (borrowerid, bookcopyid, loandate, returned) VALUES(%s,%s,%s,0);",(borrowerid, bookid, str(loandate),))
     return redirect("/currentloans")
 
 @app.route("/listborrowers")

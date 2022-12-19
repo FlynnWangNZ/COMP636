@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %} 
+Northwind Orders
+{% endblock %} 
+{% block content %}
+
+{% if productorders %}
+
+<table>
+{% set currentproduct = namespace(id =0) %}
+    {% for order in productorders %} 
+<tr>
+    {% if currentproduct.id != order[0] %} 
+    <td>{{order[1]}}</td>
+    {% set currentproduct.id = order[0] %}
+    {% else %} 
+    <td></td>
+    {% endif %}
+
+    <td>{{order[2]}}</td><td>{{order[3]}}</td>
+    <td>{{order[4]}}</td><td>{{order[5]}}</td><td>{{order[6]}}</td>
+    <td>{{order[7]}}</td>
+</tr>
+
+{% endfor %}
+
+</table>
+
+
+
+{% else %} 
+
+<h2>No product orders passed</h2>
+{% endif %}
+
+
+
+
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+<table>
+{% for supplier in supplierlist %}
+
+{% if supplier[5] == "Marketing Manager" %}
+{% set col = "red" %} 
+{% else %} 
+{% set col = "yellow" %}
+{%endif %} 
+
+
+<tr bgcolor="{{col}}">
+
+<td>{{ supplier[1] }}</td><td>{{ supplier[2] }}</td><td>{{ supplier[3] }}</td>  
+<td >{{ supplier[5] }}</td>
+
+
+</tr>
+{% endfor %}
+</table>
+
+
+<table>
+    {% for supplier in supplierlist %}
+    
+    
+    
+    
+    <tr>
+    
+    <td>{{ supplier[1] }}</td><td>{{ supplier[2] }}</td><td>{{ supplier[3] }}</td>  
+    {% if supplier[5] == "Marketing Manager" %}
+    <td bgcolor="red"> 
+    {% else %} 
+    <td bgcolor="'yellow">
+    {%endif %} 
+    {{ supplier[5] }}</td>
+
+    
+    </tr>
+    {% endfor %}
+    </table>
+
+
+    <table>
+        {% for supplier in supplierlist %}
+        
+        
+        
+        
+        {% if supplier[5] == "Marketing Manager" %}
+        <tr bgcolor="red"> 
+        {% else %} 
+        <tr bgcolor="'yellow">
+        {%endif %} 
+        
+        <td>{{ supplier[1] }}</td><td>{{ supplier[2] }}</td><td>{{ supplier[3] }}</td>  
+        <td>
+        {{ supplier[5] }}</td>
+    
+        
+        </tr>
+        {% endfor %}
+        </table>
+
+{% endblock %}

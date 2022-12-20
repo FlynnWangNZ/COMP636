@@ -10,42 +10,81 @@
             <th {% if loop.index in hiddenColumn %}hidden{% endif %}>{{columnName}}</th>
         {% endfor %}
     </thead>
+    <!--  {# Using namespace #}
+    <tbody>
+        {% set currentBorrower = namespace(id=0) %}
+        {% for loan in loanlist %}
+            {% if loan[-1] == 'eBook' %}
+                {% set color='green' %}
+            {% elif loan[-1] == 'Audio Book' %}
+                {% set color='yellow' %}
+            {% else %}
+                {% set color='white' %}
+            {% endif %}
+        <tr bgcolor={{color}}>
+            {% if currentBorrower.id != loan[0] %}
+                {% set currentBorrower.id = loan[0] %}
+                <td>{{loan[1]}}</td>
+                <td>{{loan[2]}}</td>
+            {% else %}
+                <td></td>
+                <td></td>
+            {% endif %}
+            
+            <td>{{loan[4]}}</td>
+            <td>{{loan[5]}}</td>
+            <td>{% if loan[6] == 0 %}Onloan{% else %}Returned{% endif %}</td>
+            <td>{{loan[7]}}</td>
+            <td>{{loan[8]}}</td>
+            <td>{{loan[9]}}</td>
+            <td>{{loan[10]}}</td>
+            <td>{{loan[11]}}</td>
+            <td>{{loan[12]}}</td>
+            
+        </tr>
+        {% endfor %}
+    </tbody>
+    -->
+    
     <tbody>
         {# set background color #}
         {% for loan in loanlist %}
-        {% if loan[-1] == 'eBook' %}
-        {% set color='green' %}
-        {% elif loan[-1] == 'Audio Book' %}
-        {% set color='yellow' %}
-        {% else %}
-        {% set color='white' %}
-        {% endif %}
+            {% if loan[-1] == 'eBook' %}
+                {% set color='green' %}
+            {% elif loan[-1] == 'Audio Book' %}
+                {% set color='yellow' %}
+            {% else %}
+                {% set color='white' %}
+            {% endif %}
+        
         <tr bgcolor={{color}}>
             {% set fullName=loan[1]+loan[2] %}
-            {% set isShow=1 %}
-            <label hidden> <!-- a hidden label to set full name -->
+            <label hidden disabled>
+                {# I worked out this way using list to store the full name which has appeared #}
+                {# In this way, it doesnot matter if the data is sorted or not #} 
+                {# The append function will out put a None on web, so I put it in a hidden and disabled label #}
                 {% if fullName not in nameList %}
                     {{ nameList.append(fullName) }}
+                    {% set isShow=True %}
                 {% else %}
-                    {% set isShow=0 %}
+                    {% set isShow=False %}
                 {% endif %}
             </label>
             {% for column in loan %}
             <td {% if loop.index in hiddenColumn %}hidden{% endif %}>
-                {% if loop.index == 7 %}
-                {% if column == 1 %}Returned{% else %}Onloan{% endif %}  {# Marked as Returned and Onloan #}
+                {% if loop.index == 7 %}  {# Marked as Returned and Onloan #}
+                    {% if column == 1 %}Returned{% else %}Onloan{% endif %}     
                 {% elif loop.index in [2, 3] %}  {# whether to show the borrower name or not #}
-                    {% if isShow==1 %}
-                    {{column}}
-                    {% endif %}
+                    {% if isShow %}{{column}}{% endif %}
                 {% else %}
-                {{column}}
+                    {{column}}
                 {% endif %}
             </td>
             {% endfor %}
         </tr>
         {% endfor %}
     </tbody>
+    
 </table>
 
 {% endblock %}

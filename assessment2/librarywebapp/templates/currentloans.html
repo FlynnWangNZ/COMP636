@@ -5,11 +5,11 @@
 <table class="table">
     {% set hiddenColumn=[1, 4] %}
     {% set nameList=[] %}
-    <thead>
+    <thead><tr>
         {% for columnName in ['BorrowerID', 'FirstName', 'FamilyName', 'BorrowerID', 'BookcopyID', 'LoanDate', 'Returned', 'BookID', 'BookTitle', 'Author', 'Category', 'YearOfPublication', 'Format'] %}
             <th {% if loop.index in hiddenColumn %}hidden{% endif %}>{{columnName}}</th>
         {% endfor %}
-    </thead>
+    </tr></thead>
     <!--  {# Using namespace #}
     <tbody>
         {% set currentBorrower = namespace(id=0) %}
@@ -88,3 +88,5 @@
 </table>
 
 {% endblock %}
+
+{% block title %}Current Loans{% endblock %}

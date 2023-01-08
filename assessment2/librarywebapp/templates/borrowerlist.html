@@ -3,11 +3,11 @@
 <!-- code in here to display a list of borrowers -->
 <!-- borrowerlist is the variable passed in containing list of loans -->
 <table class="table table-striped table-hover">
-    <thead>
+    <thead><tr>
         {% for columnName in ['BorrowerID', 'FirstName', 'FamilyName', 'DateOfBirth', 'HouseNumberName', 'Street', 'Town', 'City', 'Postcode'] %}
         <th>{{ columnName }}</th>
         {% endfor %}
-    </thead>
+    </tr></thead>
     <tbody>
     {% for borrower in borrowerlist %}
     <tr>
@@ -20,3 +20,5 @@
 </table>
 
 {% endblock %}
+
+{% block title %}Borrowers List{% endblock %}

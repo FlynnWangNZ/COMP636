@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Hello, Flask</title>
+</head>
+
+<body>
+{%if name %}
+<strong>Hello there, {{ name }}!</strong> It's {{ date.strftime("%A, %d %B, %Y at %X") }}
+The request method is {{ request_method }}
+{% else %}
+What's your name? Provide it after /temp/hello/ in the URL
+{% endif %}
+
+<form method="GET">
+    <input type="text" name="getInput">
+    <input type="hidden" name="hiddenGetInput" value="hiddenGetInput">
+    <input type="submit">
+</form>
+
+<form method="POST">
+    <input type="text" name="postInput">
+    <input type="hidden" name="hiddenPostInput" value="hiddenPostInput">
+    <input type="submit">
+</form>
+</body>
+</html>
+
